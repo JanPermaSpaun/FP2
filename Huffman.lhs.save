@@ -1,3 +1,4 @@
+
 > {-# LANGUAGE UnicodeSyntax #-}
 >	
 > module Huffman
@@ -41,23 +42,18 @@ Constructing a Huffman tree.
 > formbranch		:: [With Int (Tree char)] -> [With Int (Tree char)]
 > formbranch (x:xs)		
 >	| length xs == 0	= [x]
->	| otherwise			= formbranch ( sort ( [(first (x) + first (head xs)) :- satellite(x) :^: satellite(head xs)] ++ tail xs ))
+>	| otherwise			= formbranch ( sort ( [(earth (x) + earth (head xs)) :- satellite(x) :^: satellite(head xs)] ++ tail xs ))
 
 > huffmanpair		:: [With Int char] → [With Int (Tree char)]
 > huffmanpair (x:xs)	= sortedhuff (sort (x:xs))
 
 > sortedhuff		:: [With Int char] -> [With Int (Tree char)]
 > sortedhuff []			= []
-> sortedhuff (x:xs)		= [first x :- Leaf (satellite (x))] ++ sortedhuff xs
+> sortedhuff (x:xs)		= [earth x :- Leaf (satellite (x))] ++ sortedhuff xs
 
-> removefreq			:: [With Int (Tree char)] -> (Tree char)
-> removefreq ([x :- y])	= y
-		
--- Here, in the "showenglish", I apply the algorithm to 
--- relative frequencies of letters in the English language
 
-> showenglish :: IO ()
-> showenglish = print ( huffman (huffmanpair [ 1 :- 'z', 2 :- 'q', 3 :- 'x', 4 :- 'j',
+> main :: IO ()
+> main = print ( huffman (huffmanpair [ 1 :- 'z', 2 :- 'q', 3 :- 'x', 4 :- 'j',
 > 	5 :- 'k', 6 :- 'v', 7 :- 'b', 8 :- 'p', 9 :- 'y', 10 :- 'g', 11 :- 'f', 12 :- 'w',
 > 	13 :- 'm', 14 :- 'u', 15 :- 'c', 16 :- 'l', 17 :- 'd', 18 :- 'r', 19 :- 'h',
 > 	20 :- 's', 21 :- 'n', 22 :- 'i', 23 :- 'o', 24 :- 'a', 25 :- 't', 26 :- 'e']))
@@ -67,35 +63,15 @@ Constructing a Huffman tree.
 
 Encoding ASCII text.
 
-> data Bit = O | I
-> 	deriving (Show, Eq, Ord)
+< data Bit = O | I
+<  deriving (Show, Eq, Ord)
 
-> encode 			:: (Eq char) ⇒ Tree char → [char] → [Bit]
-> encode q [] = []
-> encode q (x:xs) = getcode (codes q) x ++ encode q xs
+< encode ∷ (Eq char) ⇒ Tree char → [char] → [Bit]
 
-> getcode :: (Eq char) ⇒ [(char, [Bit])] → char → [Bit]
-> getcode ((c,b):xs) ch
->   | c == ch = b
->   | otherwise = getcode xs ch 
+> codes ∷ Tree char → [(char, [Bit])]
+> 
 
--- To use "codes", first remove the frequencies with "removefreq"
-
-> codes 			:: Tree char → [(char, [Bit])]
-> codes (Leaf a :^: Leaf b)		= [(a,[O]) , (b,[I])]
-> codes (Leaf a :^: ct)			= [(a,[O])] ++ map (add I) (codes (ct))
-> codes (ct :^: Leaf b)			= map (add O) (codes ct) ++ [(b,[I])]
-> codes (cta :^: ctb)			= map (add O) (codes cta) ++ map (add I) (codes ctb)
-
-> add				:: Bit -> (char,[Bit]) -> (char,[Bit])
-> add (x) (a,bs)				= (a, [x] ++ bs)	
-
--- Here, in "showcodes", I make the tree of "hello world", remove the frequencies,
--- and make the codetable of this tree.
-
-> showcodes :: IO ()
-> showcodes = print ( codes (removefreq (huffman (frequencies "hello world"))))
-
+> createCodes :: Int codes :: Tree char 
 -------------------------------------------------------------------------------
 
 Decoding a Huffman binary.
