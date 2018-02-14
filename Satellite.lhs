@@ -11,6 +11,9 @@ Satellite data.
 >
 > satellite ∷ With a b → b
 > satellite (_ :- b)  =  b
+>
+> first ∷ With a b → a
+> first (a :- _)  =  a
 
 > instance (Eq a) ⇒ Eq (With a b) where
 >   (a :- _) == (b :- _)  =  a == b
