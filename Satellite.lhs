@@ -11,9 +11,6 @@ Satellite data.
 >
 > satellite ∷ With a b → b
 > satellite (_ :- b)  =  b
->
-> earth ∷ With a b → a
-> earth (a :- _)  =  a
 
 > instance (Eq a) ⇒ Eq (With a b) where
 >   (a :- _) == (b :- _)  =  a == b
