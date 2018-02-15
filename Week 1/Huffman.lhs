@@ -9,19 +9,31 @@
 
 -------------------------------------------------------------------------------
 
+Bas Steeg - s4259181
+Rick Lukassen - s4263812
+David van Oorsouw - s4076605
+
+-------------------------------------------------------------------------------
+
 Warm-up: constructing a frequency table.
 
 > inc :: Integer -> Integer
 > inc x			= x + 1
 
+Count the number of elements in a tree
+
 > size :: Tree elem -> Integer
 > size (Leaf a)    	= 1
-> size (l :^: r)    	= size(l) + size(r)
+> size (l :^: r)    = size(l) + size(r)
+
+Build a tree from a list of elements, whith roughly half the elements left and the other half right
 
 > build :: [elem] -> Tree elem
 > build [a] = Leaf a
 > build as = build (take n as) :^: build (drop n as)
 >	where n = length as `div` 2
+
+Count the frequencies of each element in a tree
 
 > frequencies :: (Ord char) ⇒ [char] → [With Int char]
 > frequencies xs			= makeWith (group (sort xs))
@@ -100,7 +112,19 @@ Encoding ASCII text.
 
 Decoding a Huffman binary.
 
-< decode ∷ Tree char → [Bit] → [char]
+> decode ∷ Tree char → [Bit] → [char]
+> decode t bs = decode' t bs []
+>	where
+> 		decode' (Leaf c) [] cs 		= cs ++ [c]
+> 		decode' (l :^: r) (b:bs) cs
+>			| b == O = decode' l bs cs
+>			| b == I = decode' r bs cs
+> 		decode' (Leaf c) bs cs			= decode' t bs (cs ++ [c])
+
+> showdecode ∷ IO ()
+> showdecode = 
+>	let ct = (removefreq (huffman (frequencies "hello world"))) 
+> 	in  (print (decode ct (encode ct "hello world")))
 
 -------------------------------------------------------------------------------
 
