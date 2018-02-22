@@ -45,7 +45,6 @@
 > diff s  =  tail s - s
 
 > sum :: (Num elem) => Stream elem -> Stream elem
-> sum s = s --Ik ben te dom om deze (nu) op te lossen.
+> sum a = Cons 0 (sum a + a)
 
-> terror = take 10 (diff ( sum (2*nat+1)))
-
+-- Question unclear??? Guess we can't.
