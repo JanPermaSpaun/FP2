@@ -45,18 +45,20 @@ Multiway trees.
 
 > winning  ∷ Tree position → Bool
 > winning (Node e []) = False
-> winning (Node e t)  = not(winningt t)
-
-> winningt :: [Tree position] -> Bool
-> winningt [] = False
-> winningt (t:ts) = (winning t) && (winningt ts)
+> winning (Node e t)  = foldl (||) False (map (losing) t)
 
 > losing :: Tree position -> Bool
 > losing (Node e []) = True
-> losing (Node e t) = not (losingt t)
+> losing (Node e t) = foldl (&&) True (map (winning) t)
 
-> losingt :: [Tree position] -> Bool
-> losingt [] = True
+
+> prune :: Integer → Tree elem → Tree elem
+> prune 1 (Node q _) = Node q []
+> prune n (Node q t) = Node q (map (prune (n-1)) t)
+
+< type Value = Int — [−100 . . 100]
+< static :: Position → Value
+
 
 
 -- *Minimax2> winning (gametree moves (13,10))
@@ -73,4 +75,3 @@ Multiway trees.
 --(6.66 secs, 2,108,523,968 bytes)
 --Conclusion: it explodes.
 
-> losingt (t:ts) = (losing t) && (losingt ts)
