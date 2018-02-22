@@ -56,8 +56,8 @@ Multiway trees.
 > prune 1 (Node q _) = Node q []
 > prune n (Node q t) = Node q (map (prune (n-1)) t)
 
-< type Value = Int — [−100 . . 100]
-< static :: Position → Value
+> type Value = Int — [−100 . . 100]
+> static :: Position → Value
 
 
 
