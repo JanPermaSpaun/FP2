@@ -7,6 +7,15 @@
 > import Squiggol
 > import Data.List
 
+
+-------------------------------------------------------------------------------
+
+Bas Steeg - s4259181
+Rick Lukassen - s4263812
+David van Oorsouw - s4076605
+
+-------------------------------------------------------------------------------
+
 Multiway trees.
 
 > data Tree elem  =  Node elem [Tree elem]
@@ -41,8 +50,6 @@ Multiway trees.
 > gametree ∷ (position → [position]) → (position → Tree position)
 > gametree mov p = Node p [(gametree mov x) | x <- (mov p)]
 
---Klopt dit?? Zie onder
-
 > winning  ∷ Tree position → Bool
 > winning (Node e []) = False
 > winning (Node e t)  = foldl (||) False (map (losing) t)
@@ -56,22 +63,22 @@ Multiway trees.
 > prune 1 (Node q _) = Node q []
 > prune n (Node q t) = Node q (map (prune (n-1)) t)
 
-> type Value = Int — [−100 . . 100]
-> static :: Position → Value
+> type Value = Int 
+
+> static :: Position -> Value
+> static (x,y)
+>			|	x `mod` 2 == 0	= 100
+>			|	y `mod` 2 == 0  = 100
+>			| 	otherwise 		= -100
+
+> maximize :: (position -> Value) -> (Tree position -> Value)
+> maximize f (Node e []) = f e
+> maximize f (Node e t) = maximum (map (minimize f) t)
+
+> minimize :: (position -> Value) -> (Tree position -> Value)
+> minimize f (Node e []) = f e
+> minimize f (Node e t) = minimum (map (maximize f) t)
 
 
 
--- *Minimax2> winning (gametree moves (13,10))
---True
---(0.08 secs, 24,280,928 bytes)
---*Minimax2> winning (gametree moves (14,10))
---True
---(0.11 secs, 36,180,600 bytes)
---*Minimax2> winning (gametree moves (16,10))
---True
---(0.42 secs, 132,001,032 bytes)
---*Minimax2> winning (gametree moves (20,10))
---True
---(6.66 secs, 2,108,523,968 bytes)
---Conclusion: it explodes.
 
