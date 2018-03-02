@@ -25,6 +25,14 @@
 >				list <- readIORef ref
 >				case list of
 >					Nil			-> return []
->					Cons x next -> do {xs <- toList next; return (x:xs)} 
+>					Cons x next -> do 	{xs <- toList next
+>										; return (x:xs)} 
 
-< foreach ∷ ListRef a → (a → IO b) → IO (ListRef b)
+> foreach :: ListRef a → (a → IO b) → IO (ListRef b)
+> foreach ref f = do
+>				list <- readIORef ref
+>				case list of
+>					Nil			-> newIORef Nil
+>					Cons x next -> do 	{e <- f x
+>										; xs <- foreach next f
+>										; cons e xs} 
