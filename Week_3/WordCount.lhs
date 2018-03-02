@@ -7,6 +7,13 @@ ghc --make WordCount.lhs
 > import Unicode ()
 > import System.Environment
 
+-------------------------------------------------------------------------------
+
+Bas Steeg - s4259181
+Rick Lukassen - s4263812
+David van Oorsouw - s4076605
+
+-------------------------------------------------------------------------------
 
 > main :: IO ()
 > main = do {

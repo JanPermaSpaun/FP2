@@ -8,6 +8,13 @@ ghc --make OTP.lhs
 > import Unicode ()
 > import System.Random
 > import System.Environment
+-------------------------------------------------------------------------------
+
+Bas Steeg - s4259181
+Rick Lukassen - s4263812
+David van Oorsouw - s4076605
+
+-------------------------------------------------------------------------------
 
 > dice :: IO Int
 > dice = getStdRandom (randomR (1,6))

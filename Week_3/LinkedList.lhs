@@ -9,6 +9,14 @@
 >
 > data List elem  =  Nil | Cons elem (ListRef elem)
 
+-------------------------------------------------------------------------------
+
+Bas Steeg - s4259181
+Rick Lukassen - s4263812
+David van Oorsouw - s4076605
+
+-------------------------------------------------------------------------------
+
 > nil  :: IO (ListRef elem)
 > nil	= newIORef Nil
 
