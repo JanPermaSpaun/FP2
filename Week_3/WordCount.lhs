@@ -8,18 +8,16 @@ ghc --make WordCount.lhs
 > import System.Environment
 
 
-> countWords :: String -> Int
-> countWords [] = 0
-> countWords (x:xs)
->   | x == ' '   = 1 + countWords xs
->   | otherwise  = countWords xs
-
 > main :: IO ()
-> main = do
->   args <- getArgs
->   case args of
->       [] -> return ()
->       (x:xs) -> do{
->       file <- readFile x;
->       putStrLn(x ++ "  " ++ show(countWords(file) + 1) ++ "  " ++ (show (length file))); -- Does not really count bytes, not a clue how to do that. Counts words :).
->       }
+> main = do {
+>		args <- getArgs;
+>		putCounts args (0,0,0);
+>	} where 
+>	putCounts [] (lc, wc, cc) = do {
+>		putStrLn(show(lc) ++ " " ++ show(wc) ++ " " ++ show(cc) ++ " total");
+>	}
+>	putCounts (x:xs) (lc, wc, cc) = do {
+>		f <- readFile x;
+>		putStrLn(show(length $ lines f) ++ " " ++ show(length $ words f) ++ " " ++ show(length f) ++ " " ++ x);		
+>		putCounts xs (lc + (length $ lines f), wc + (length $ words f), cc + (length f));
+>	}
