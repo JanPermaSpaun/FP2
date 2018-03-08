@@ -10,7 +10,7 @@ Bas Steeg - s4259181
 Rick Lukassen - s4263812
 David van Oorsouw - s4076605
 
--------------------------------------------------------------------------------
+-------------------------------------------------------------------------------l
 
 > bools  ∷  [Bool]
 > bools  =  pure False ++ pure True
@@ -29,7 +29,7 @@ David van Oorsouw - s4076605
 > ranks = (pure Faceless <*> integers) ++ (pure Jack) ++ (pure Queen) ++ (pure King)
 
 > integers :: [Integer]
-> integers =  (pure 2) ++ (pure 3) ++ (pure 4) ++ (pure 5) ++ (pure 6) ++ (pure 7) ++ (pure 8) ++ (pure 9) ++ (pure 10)
+> integers =  [a | b <- [2..10], a <- (pure b)]
 
 > cards :: [Card]
 > cards = (pure Joker) ++ (pure Card <*> ranks <*> suits)
@@ -37,11 +37,11 @@ David van Oorsouw - s4076605
 > data Tree elem = Empty | Node (Tree elem) elem (Tree elem)
 
 > lists :: [elem] -> Integer -> [[elem]]
-> lists [] i = []
+> lists [] i =  []
 > lists _ 0 = []
 > lists (e:es) i 
->   | i == 1 = [[e]] ++ (combine es i)
->   | i > 1  = [((e:es) !! a) : b | a <- [0 .. (length(e:es) -1)], b <-  (combine (e:es) (i-1))]
+>   | i == 1 = [[e]] ++  (lists es i)
+>   | i > 1  = [((e:es) !! a) : b | a <- [0 .. (length(e:es) -1)], b <-  (lists (e:es) (i-1))]
 
 
 
